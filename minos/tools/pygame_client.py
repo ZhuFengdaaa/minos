@@ -6,6 +6,7 @@ import pygame
 from pygame.locals import *
 from timeit import default_timer as timer
 import traceback
+import time
 
 from minos.lib import common
 from minos.config.sim_args import parse_sim_args

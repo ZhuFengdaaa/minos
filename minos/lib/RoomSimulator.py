@@ -122,7 +122,8 @@ class RoomSimulator:
 
         # set starting dist to goal from last observation
         if result:
-            if 'roomType' in result['goal'] and hasattr(self.sim, 'roomTypes'):
+            print(result)
+            if "goal" in result and 'roomType' in result['goal'] and hasattr(self.sim, 'roomTypes'):
                 result['goal']['roomTypeEncoded'] = self.sim.roomTypes.get_index_one_hot(result['goal']['roomType'])
             dist = self.get_distance_to_goal()
             if len(dist):
