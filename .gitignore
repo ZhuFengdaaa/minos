@@ -108,3 +108,12 @@ venv.bak/
 
 # PyCharm
 .idea/
+minos/tools/traceback
+minos/tools/random
+minos/tools/math
+minos/tools/concurrent.futures
+minos/tools/argparse
+minos/config/sim_config.py.bak
+gym/train.py.bak
+gym/checkpoint
+/gym/demo_mp.py

@@ -17,9 +17,12 @@ def run_gym(sim_args):
         observation = env.reset()
         done = False
         num_steps = 0
-        while not done:
+        for _ in range(20):
             env.render()
             action = env.action_space.sample()
+            print(action)
+            for action_idx, do_action in enumerate(action):
+                print(action_idx, do_action)
             observation, reward, done, info = env.step(action)
             if sim_args.save_observations:
                 save_observations(observation, sim_args)
