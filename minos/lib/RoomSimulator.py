@@ -65,7 +65,7 @@ class RoomSimulator:
                   % (self.sim.id, self.num_episodes, self.scene_id, time_taken, self.num_steps_this_episode,
                      success, self.num_steps_this_episode / time_taken, self.start_dist, end_dist, path_start_dist,
                      path_numdoors, path_numrooms))
-            print('%s:EPINFO:%d,%s' % (self.sim.id, self.num_episodes, str(self.start_config_this_episode)))
+            # print('%s:EPINFO:%d,%s' % (self.sim.id, self.num_episodes, str(self.start_config_this_episode)))
             sys.stdout.flush()
         self.episode_is_running = False
 

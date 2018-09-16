@@ -5,5 +5,5 @@ logger = logging.getLogger(__name__)
 
 register(
     id='indoor-v0',
-    entry_point='gym_minos.envs:IndoorEnv',
+    entry_point='gym_minos.minos:IndoorEnv',
 )

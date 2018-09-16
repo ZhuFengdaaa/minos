@@ -21,9 +21,10 @@ def run_gym(sim_args):
             env.render()
             action = env.action_space.sample()
             print(action)
-            for action_idx, do_action in enumerate(action):
-                print(action_idx, do_action)
+            # for action_idx, do_action in enumerate(action):
+            #     print(action_idx, do_action)
             observation, reward, done, info = env.step(action)
+            print(reward, done)
             if sim_args.save_observations:
                 save_observations(observation, sim_args)
             num_steps += 1

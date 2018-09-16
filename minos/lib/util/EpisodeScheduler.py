@@ -7,7 +7,6 @@ class EpisodeScheduler:
         if schedule != 'random' and schedule != 'fixed':
             raise Exception('Invalid schedule type: ' + schedule)
         print(seed)
-        print(num_episodes_per_scene)
         self.random = random.Random(seed)
         self.state_set = state_set
         self.schedule = schedule
@@ -49,7 +48,6 @@ class EpisodeScheduler:
                 _scene_id = self.random.choice(scenes)['id']
             self.scene_id = _scene_id
         self.num_episodes_this_scene += 1
-        print({'scene_id': self.scene_id})
         return {'scene_id': self.scene_id}
 
     def _next_state(self):

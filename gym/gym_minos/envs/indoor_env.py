@@ -6,6 +6,7 @@ import gym
 from gym import spaces
 from gym.utils import seeding
 import numpy as np
+from PIL import Image
 
 # This is currently an experimental wrapper that wraps around the room simulator
 # It may make sense to wrap the Simulator and have several prespecified configurations
@@ -62,7 +63,9 @@ class IndoorEnv(gym.Env):
             space.
         """
         res = self._sim.reset()
-        return res.get('observation')
+        res = res.get('observation')['observation']['sensors']['color']['data']
+        res = Image.fromarray(res).convert('RGB')
+        return res
 
     def _step(self, action):
         """Run one timestep of the environment's dynamics. When end of
@@ -83,6 +86,8 @@ class IndoorEnv(gym.Env):
         self._last_state = state  # Last observed state
         observation = {k:v for k,v in state.items() if k not in ['rewards','terminals']}
         info = state['info']
+        observation = observation['observation']['sensors']['color']['data']
+        observation = Image.fromarray(observation).convert('RGB')
         return observation, state['rewards'], state['terminals'], info
 
     def _render(self, mode='human', close=False):
