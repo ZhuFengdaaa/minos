@@ -46,9 +46,9 @@ def ensure_dir_exists(path):
             raise
 
 
-def observation_to_reward(reward_type, observation, meas, term, success, last_observation, frame_skip):
+def observation_to_reward(reward_type, observation, meas, success, last_observation, frame_skip):
     if reward_type == 'path_delta':
-        if term and success:
+        if success:
             return 10.0
         rwrd = -0.1 * frame_skip
         if observation.get('collision'):

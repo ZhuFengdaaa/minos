@@ -17,7 +17,7 @@ sim_defaults = {
 
     # Shared RoomSimulator and DoomSimulator params
     'modalities': ['color', 'measurements'],
-    'outputs': ['color', 'measurements', 'rewards', 'terminals'],
+    'outputs': ['color', 'measurements', 'rewards', 'success'],
     'resolution': (84, 84),
     'frame_skip': 1,
 

@@ -194,9 +194,6 @@ class RoomSimulator:
         self.num_steps_this_episode += self.frame_skip
         response = self._augment_response(response, last_observation)
 
-        if response['terminals']:
-            self.end_episode(response['success'], print_episode_stats=True)
-
         return response
 
     def _augment_response(self, response, last_observation):
@@ -208,12 +205,11 @@ class RoomSimulator:
             rt = self.sim.roomTypes.get_index_one_hot(room_info['roomType'] if room_info else '')
             room_info['roomTypeEncoded'] = rt  # Updates observation!!!
 
-        meas, success, term = self.measure_fun.measure(observation, self.start_config_this_episode)
+        meas, success = self.measure_fun.measure(observation, self.start_config_this_episode)
         response['success'] = success
         response['measurements'] = meas
-        response['rewards'] = common.observation_to_reward(self.reward_type, observation, meas, term, success,
+        response['rewards'] = common.observation_to_reward(self.reward_type, observation, meas, success,
                                                            last_observation, self.frame_skip)
-        response['terminals'] = term
         #response['objectives'] = self.measure_fun.get_objectives(observation, self.start_config_this_episode)
         return response
 

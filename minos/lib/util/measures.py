@@ -18,8 +18,8 @@ class Measure:
 
     def measure(self, observation, episode_info=None):
         meas = self.my_measure(observation, episode_info)
-        success, term = self._get_success_and_term(observation, episode_info)
-        return meas, success, term
+        success = self._get_success_and_term(observation, episode_info)
+        return meas, success
 
     def my_measure(self, observation, episode_info=None):
         return []
@@ -40,8 +40,7 @@ class Measure:
         else:
             success = distances[0] <= self.goal_dist_threshold
 
-        term = success or time > self.termination_time
-        return success, term
+        return success
 
 
 def rescale_and_quantize(x, shape, num_bins, max_val):
