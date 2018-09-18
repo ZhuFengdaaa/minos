@@ -30,7 +30,7 @@ class IndoorEnv(gym.Env):
         self.screen_height = self._sim_obs_space['color'].shape[1]
         self.screen_width = self._sim_obs_space['color'].shape[0]
         self.observation_space = spaces.Box(low=0, high=255, 
-            shape=(self.screen_height, self.screen_width, 3))
+            shape=(self.screen_height, self.screen_width, 4))
         # TODO: have more complex observation space with additional modalities and measurements
         # obs_space = self._sim.get_observation_space
         #self.observation_space = spaces.Dict({"images": ..., "depth": ...})
@@ -63,9 +63,10 @@ class IndoorEnv(gym.Env):
             space.
         """
         res = self._sim.reset()
-        res = res.get('observation')['observation']['sensors']['color']['data']
-        res = Image.fromarray(res).convert('RGB')
-        return res
+        observation = res.get('observation')
+        rgb = observation['observation']['sensors']['color']['data']
+        goal = observation['observation']['roomInfo']['roomTypeEncoded']
+        return [rgb, goal]
 
     def _step(self, action):
         """Run one timestep of the environment's dynamics. When end of
@@ -86,9 +87,9 @@ class IndoorEnv(gym.Env):
         self._last_state = state  # Last observed state
         observation = {k:v for k,v in state.items() if k not in ['rewards','success']}
         info = state['info']
-        observation = observation['observation']['sensors']['color']['data']
-        observation = Image.fromarray(observation).convert('RGB')
-        return observation, state['rewards'], state['success'], info
+        rgb = observation['observation']['sensors']['color']['data']
+        goal = observation['observation']['roomInfo']['roomTypeEncoded']
+        return [rgb, goal], state['rewards'], state['success'], info
 
     def _render(self, mode='human', close=False):
         """Renders the environment.
