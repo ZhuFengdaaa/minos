@@ -64,15 +64,15 @@ class IndoorEnv(gym.Env):
             space.
         """
         res = self._sim.reset()
-        # self.goal = res.get("episode_info")["goal"]['roomTypeEncoded']
-        self.goal = []
+        self.goal = res.get("episode_info")["goal"]['roomTypeEncoded']
         observation = res.get('observation')
         rgb = observation['observation']['sensors']['color']['data']
         depth = np.expand_dims(observation['observation']['sensors']['depth']['data'], axis=2)
         obs = np.concatenate([rgb, depth], axis=2)
         force = observation['observation']['sensors']['forces']['data']
         condis = np.concatenate([self.goal, force], axis=0)
-        return [obs, condis, res.get("episode_info")]
+        print("reset ", res.get("episode_info")["goal"]["roomType"])
+        return [obs, condis]
 
     def _step(self, action):
         """Run one timestep of the environment's dynamics. When end of
@@ -98,7 +98,9 @@ class IndoorEnv(gym.Env):
         obs = np.concatenate([rgb, depth], axis=2)
         force = observation['observation']['sensors']['forces']['data']
         condis = np.concatenate([self.goal, force], axis=0)
-        return [obs, condis, info["agent_state"]["position"], info["agent_state"]["orientation"]], state['rewards'], state['success'], info
+        print("step ", observation['observation']["roomInfo"]['roomType'])
+        time.sleep(0.1)
+        return [obs, condis], state['rewards'], state['success'], info
 
     def _render(self, mode='human', close=False):
         """Renders the environment.
