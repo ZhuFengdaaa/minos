@@ -7,6 +7,7 @@ from gym import spaces
 from gym.utils import seeding
 import numpy as np
 from PIL import Image
+import time
 
 # This is currently an experimental wrapper that wraps around the room simulator
 # It may make sense to wrap the Simulator and have several prespecified configurations
@@ -30,7 +31,7 @@ class IndoorEnv(gym.Env):
         self.screen_height = self._sim_obs_space['color'].shape[1]
         self.screen_width = self._sim_obs_space['color'].shape[0]
         self.observation_space = spaces.Box(low=0, high=255, 
-            shape=(self.screen_height, self.screen_width, 4))
+            shape=(self.screen_height, self.screen_width, 5))
         # TODO: have more complex observation space with additional modalities and measurements
         # obs_space = self._sim.get_observation_space
         #self.observation_space = spaces.Dict({"images": ..., "depth": ...})
@@ -63,10 +64,15 @@ class IndoorEnv(gym.Env):
             space.
         """
         res = self._sim.reset()
+        # self.goal = res.get("episode_info")["goal"]['roomTypeEncoded']
+        self.goal = []
         observation = res.get('observation')
         rgb = observation['observation']['sensors']['color']['data']
-        goal = observation['observation']['roomInfo']['roomTypeEncoded']
-        return [rgb, goal]
+        depth = np.expand_dims(observation['observation']['sensors']['depth']['data'], axis=2)
+        obs = np.concatenate([rgb, depth], axis=2)
+        force = observation['observation']['sensors']['forces']['data']
+        condis = np.concatenate([self.goal, force], axis=0)
+        return [obs, condis, res.get("episode_info")]
 
     def _step(self, action):
         """Run one timestep of the environment's dynamics. When end of
@@ -88,8 +94,11 @@ class IndoorEnv(gym.Env):
         observation = {k:v for k,v in state.items() if k not in ['rewards','success']}
         info = state['info']
         rgb = observation['observation']['sensors']['color']['data']
-        goal = observation['observation']['roomInfo']['roomTypeEncoded']
-        return [rgb, goal], state['rewards'], state['success'], info
+        depth = np.expand_dims(observation['observation']['sensors']['depth']['data'], axis=2)
+        obs = np.concatenate([rgb, depth], axis=2)
+        force = observation['observation']['sensors']['forces']['data']
+        condis = np.concatenate([self.goal, force], axis=0)
+        return [obs, condis, info["agent_state"]["position"], info["agent_state"]["orientation"]], state['rewards'], state['success'], info
 
     def _render(self, mode='human', close=False):
         """Renders the environment.
