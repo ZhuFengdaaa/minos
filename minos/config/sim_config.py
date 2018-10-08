@@ -53,7 +53,7 @@ sim_defaults = {
     'num_episodes_per_restart': 1000,
     'num_episodes_per_scene': 10,
     'max_states_per_scene': 1,
-    'episodes_per_scene_test': 1,  # DFP param
+    'episodes_per_scene_test': 10,  # DFP param
     'episodes_per_scene_train': 10,  # DFP param
     'episode_schedule': 'train',  # DFP param
     'measure_fun': measures.MeasureDistDirTime(),

@@ -71,7 +71,6 @@ class IndoorEnv(gym.Env):
         obs = np.concatenate([rgb, depth], axis=2)
         force = observation['observation']['sensors']['forces']['data']
         condis = np.concatenate([self.goal, force], axis=0)
-        print("reset ", res.get("episode_info")["goal"]["roomType"])
         return [obs, condis]
 
     def _step(self, action):
@@ -98,8 +97,6 @@ class IndoorEnv(gym.Env):
         obs = np.concatenate([rgb, depth], axis=2)
         force = observation['observation']['sensors']['forces']['data']
         condis = np.concatenate([self.goal, force], axis=0)
-        print("step ", observation['observation']["roomInfo"]['roomType'])
-        time.sleep(0.1)
         return [obs, condis], state['rewards'], state['success'], info
 
     def _render(self, mode='human', close=False):
@@ -147,3 +144,6 @@ class IndoorEnv(gym.Env):
     def _close(self):
         if self._sim is not None:
             self._sim.close_game()
+
+    def _is_done(self):
+        return self._sim.is_all_scheduled_episodes_done()
