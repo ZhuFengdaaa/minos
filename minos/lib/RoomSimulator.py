@@ -61,11 +61,11 @@ class RoomSimulator:
                 path_start_dist = -1.0
             path_numdoors = len(sconf['shortestPath'].get('doors', [])) if has_spath else 0
             path_numrooms = len(sconf['shortestPath'].get('rooms', [])) if has_spath else 0
-            print('%s:EPISODE:%d,%s,%f,%d,%s,%f,%f,%f,%f,%d,%d'
-                  % (self.sim.id, self.num_episodes, self.scene_id, time_taken, self.num_steps_this_episode,
-                     success, self.num_steps_this_episode / time_taken, self.start_dist, end_dist, path_start_dist,
-                     path_numdoors, path_numrooms))
-            print('%s:EPINFO:%d,%s' % (self.sim.id, self.num_episodes, str(self.start_config_this_episode)))
+            # print('%s:EPISODE:%d,%s,%f,%d,%s,%f,%f,%f,%f,%d,%d'
+            #       % (self.sim.id, self.num_episodes, self.scene_id, time_taken, self.num_steps_this_episode,
+            #         success, self.num_steps_this_episode / time_taken, self.start_dist, end_dist, path_start_dist,
+            #         path_numdoors, path_numrooms))
+            # print('%s:EPINFO:%d,%s' % (self.sim.id, self.num_episodes, str(self.start_config_this_episode)))
             sys.stdout.flush()
         self.episode_is_running = False
 
@@ -122,7 +122,6 @@ class RoomSimulator:
 
         # set starting dist to goal from last observation
         if result:
-            print(result)
             if "goal" in result and 'roomType' in result['goal'] and hasattr(self.sim, 'roomTypes'):
                 result['goal']['roomTypeEncoded'] = self.sim.roomTypes.get_index_one_hot(result['goal']['roomType'])
             dist = self.get_distance_to_goal()

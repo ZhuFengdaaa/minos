@@ -193,9 +193,9 @@ def create_episode_schedulers(params):
         print(k + ':' + str(len(state_set_splits[k].states)) + ' episodes')
 
     train_scheduler = EpisodeScheduler(state_set_splits['train'], schedule='random', seed=seed,
-                                       num_episodes_per_scene=episodes_per_scene_train)
+                                       num_episodes_per_scene=episodes_per_scene_train) if "train" in state_set_splits else None
     val_scheduler = EpisodeScheduler(state_set_splits['val'], schedule='fixed', seed=seed,
-                                     num_episodes_per_scene=episodes_per_scene_test)
+                                     num_episodes_per_scene=episodes_per_scene_test) if "val" in state_set_splits else None
     test_scheduler = EpisodeScheduler(state_set_splits['test'], schedule='fixed', seed=seed,
-                                      num_episodes_per_scene=episodes_per_scene_test)
+                                      num_episodes_per_scene=episodes_per_scene_test) if "test" in state_set_splits else None
     return {'train': train_scheduler, 'val': val_scheduler, 'test': test_scheduler}

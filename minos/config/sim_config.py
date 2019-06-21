@@ -66,7 +66,7 @@ sim_defaults = {
     'states_file': '../data/episode_states.suncg.csv.bz2',
     'roomtypes_file': '../data/roomTypes.suncg.csv',
     'num_episodes_per_restart': 1000,
-    'num_episodes_per_scene': 10,
+    'num_episodes_per_scene': 10, # guanghui_flag
     'max_states_per_scene': 1,
     'episodes_per_scene_test': 1,  # DFP param
     'episodes_per_scene_train': 10,  # DFP param
